@@ -4,7 +4,7 @@
   Plugin Name: BoxGallery
    Plugin URI: http://github.com/ruandre/boxgallery
   Description: A shortcode for displaying multiple lightbox galleries per post or page, each represented by a single image.
-      Version: 0.3
+      Version: 0.4
        Author: Ruandre Janse Van Rensburg
    Author URI: http://ruandre.com
       License: GNU General Public License v2 or later
@@ -49,15 +49,17 @@ function boxgallery_shortcode($atts, $content = null) {
 
   $set        = false;
   $boxgallery = false;
+  $data       = " data-lightbox=\"set{$i}\"";
 
-  // Only one image? Let's leave a message for the user:
-  if (count($images) == 1)
-    return __('BoxGallery requires more than one image to function.', 'boxgallery');
+  // Only one image? Let's make a single-image lightbox:
+  if (count($images) == 1) {
+    $src   = wp_get_attachment_image_src($images[0], $size);
+    $href  = wp_get_attachment_image_src($images[0], 'large');
+    return "<a href=\"{$href[0]}\"{$data}><img src=\"{$src[0]}\" alt=\"\"></a>";
+  }
 
   // If we have attachment ids to work with:
   if ($images && !empty($images) && (count($images) > 1)):
-
-    $data = " data-lightbox=\"set{$i}\"";
 
     // Got thumbnail id? Let's use it:
     if ($thumb) {
