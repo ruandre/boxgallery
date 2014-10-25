@@ -31,7 +31,7 @@ Just rename it to **boxgallery** and you're set:
 [boxgallery ids="11,8,7"]
 ```
 
-You can specify your own thumbnail image **id** like so:
+You can specify your own **thumbnail image id** like so:
 
 ```
 [boxgallery ids="8,7" thumb="11"]
@@ -40,7 +40,7 @@ You can specify your own thumbnail image **id** like so:
 You can also specify an image **size** like so:
 
 ```
-[boxgallery ids="11,8,7" thumb="false" size="thumbnail"]
+[boxgallery ids="11,8,7" size="thumbnail"]
 ```
 
 ### Credits:
