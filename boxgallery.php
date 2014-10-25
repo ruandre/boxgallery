@@ -4,7 +4,7 @@
   Plugin Name: BoxGallery
    Plugin URI: http://github.com/ruandre/boxgallery
   Description: A shortcode for displaying multiple lightbox galleries per post or page, each represented by a single image.
-      Version: 0.2
+      Version: 0.3
        Author: Ruandre Janse Van Rensburg
    Author URI: http://ruandre.com
       License: GNU General Public License v2 or later
@@ -50,25 +50,29 @@ function boxgallery_shortcode($atts, $content = null) {
   $set        = false;
   $boxgallery = false;
 
+  // Only one image? Let's leave a message for the user:
+  if (count($images) == 1)
+    return __('BoxGallery requires more than one image to function.', 'boxgallery');
+
   // If we have attachment ids to work with:
-  if ($images && !empty($images)):
+  if ($images && !empty($images) && (count($images) > 1)):
 
-    $first = array_shift($images); // Get first image and remove it.
-    $src   = wp_get_attachment_image_src($first, $size);
-    $href  = wp_get_attachment_image_src($first, 'large');
-    $data  = " data-lightbox=\"set{$i}\"";
+    $data = " data-lightbox=\"set{$i}\"";
 
+    // Got thumbnail id? Let's use it:
     if ($thumb) {
-      // Let's remove the first image and link to the second instead:
-      $first = array_shift($images);
-      $href  = wp_get_attachment_image_src($first, 'large');
-      $goto  = $href[0];
+      $src   = wp_get_attachment_image_src($thumb, $size);
+      $href  = wp_get_attachment_image_src($images[0], 'large');
+      $first = "<a href=\"{$href[0]}\"{$data}><img src=\"{$src[0]}\" alt=\"\"></a>";
+      array_shift($images); // Remove first image.
     }
+    // No thumbnail id? Let's use the first image:
     else {
-      $goto = $href[0];
+      $first = array_shift($images); // Get first image and remove it.
+      $src   = wp_get_attachment_image_src($first, $size);
+      $href  = wp_get_attachment_image_src($first, 'large');
+      $first = "<a href=\"{$href[0]}\"{$data}><img src=\"{$src[0]}\" alt=\"\"></a>";
     }
-
-    $first = "<a href=\"{$goto}\"{$data}><img src=\"{$src[0]}\" alt=\"\"></a>";
 
     // Create a set using all the remaining images:
     foreach ($images as $image) {
