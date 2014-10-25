@@ -31,10 +31,16 @@ Just rename it to **boxgallery** and you're set:
 [boxgallery ids="11,8,7"]
 ```
 
+Don't want to include the **first (thumbnail)** image in the gallery? Here's how:
+
+```
+[boxgallery ids="11,8,7" thumb="true"]
+```
+
 You can also specify an image **size** like so:
 
 ```
-[boxgallery ids="11,8,7" size="thumbnail"]
+[boxgallery ids="11,8,7" thumb="false" size="thumbnail"]
 ```
 
 ### Credits:

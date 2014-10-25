@@ -4,9 +4,9 @@
   Plugin Name: BoxGallery
    Plugin URI: http://github.com/ruandre/boxgallery
   Description: A shortcode for displaying multiple lightbox galleries per post or page, each represented by a single image.
-      Version: 0.1
+      Version: 0.2
        Author: Ruandre Janse Van Rensburg
-   Author URI: http://www.ruandre.com/
+   Author URI: http://ruandre.com
       License: GNU General Public License v2 or later
   License URI: http://www.gnu.org/licenses/gpl-2.0.html
   Text Domain: boxgallery
@@ -30,8 +30,9 @@ function boxgallery_shortcode($atts, $content = null) {
   static $i = 0; $i++;
 
   // Make shortcode attributes available as variables:
-  extract(shortcode_atts(array('ids'  => false,
-                               'size' => false), $atts));
+  extract(shortcode_atts(array('ids'   => false,
+                               'thumb' => false,
+                               'size'  => false), $atts));
 
   // Default image size:
   if (!$size) $size = 'medium';
@@ -56,7 +57,18 @@ function boxgallery_shortcode($atts, $content = null) {
     $src   = wp_get_attachment_image_src($first, $size);
     $href  = wp_get_attachment_image_src($first, 'large');
     $data  = " data-lightbox=\"set{$i}\"";
-    $first = "<a href=\"{$href[0]}\"{$data}><img src=\"{$src[0]}\" alt=\"\"></a>";
+
+    if ($thumb) {
+      // Let's remove the first image and link to the second instead:
+      $first = array_shift($images);
+      $href  = wp_get_attachment_image_src($first, 'large');
+      $goto  = $href[0];
+    }
+    else {
+      $goto = $href[0];
+    }
+
+    $first = "<a href=\"{$goto}\"{$data}><img src=\"{$src[0]}\" alt=\"\"></a>";
 
     // Create a set using all the remaining images:
     foreach ($images as $image) {
