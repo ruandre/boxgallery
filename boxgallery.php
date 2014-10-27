@@ -4,7 +4,7 @@
   Plugin Name: BoxGallery
    Plugin URI: http://github.com/ruandre/boxgallery
   Description: A shortcode for displaying multiple lightbox galleries per post or page, each represented by a single image.
-      Version: 0.6
+      Version: 0.7
        Author: Ruandre Janse Van Rensburg
    Author URI: http://ruandre.com
       License: GNU General Public License v2 or later
@@ -112,7 +112,7 @@ function boxgallery_shortcode($atts) {
     } else {
 
       if ($thumb) {
-        $src = wp_get_attachment_image_src($thumb[0], $size);
+        $src = wp_get_attachment_image_src($thumb, $size);
         $src = ($src && !empty($src)) ? $src[0] : false;
       } else {
         $src = wp_get_attachment_image_src($images[0], $size);
